@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+#container {border: 3px solid black; height: 500px; width: 500px;}
+
+
+
+</style>
+</head>
+<body>
+<div id="container"><canvas id="canvas" width="500px" height="500px" > 
+</canvas></div>
+
+<script>
+var cialo = Array(100);
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext('2d');
+    
+
+function kwadracik(x,y,size,kolor,vx,vy)
+	{
+		this.x = x;
+		this.y = y;
+		this.size = size;
+		this.kolor = kolor;
+		this.vx = vx;
+		this.vy = vy;
+		
+		
+	ctx.beginPath();
+	ctx.fillStyle = this.color;
+	ctx.fillRect(this.x,this.y,this.size,this.size);
+    ctx.fillRect(this.x,this.y,this.size,this.size);
+    ctx.fillRect(this.x,this.y,this.size,this.size);
+    ctx.fill();
+	ctx.stroke();
+	}
+
+
+
+cialo[0] = new kwadracik(256,245,10,"black",11,11);
+cialo[1] = new kwadracik(245,245,10,"black",11,11); 
+cialo[2] = new kwadracik(234,245,10,"black",11,11);
+
+
+kwadracik.prototype.gora = function() 
+	{
+	
+	this.y -= this.vy;
+	ctx.fillRect(this.x,this.y,this.size,this.size);
+	
+	}
+
+kwadracik.prototype.dol = function() 
+	{
+
+	this.y += this.vy;
+	ctx.fillRect(this.x,this.y,this.size,this.size);
+	
+	}
+	
+	
+kwadracik.prototype.lewo = function() 
+	{
+	this.x -= this.vx;
+	ctx.fillRect(this.x,this.y,this.size,this.size);
+	
+	}
+	
+kwadracik.prototype.prawo = function() 
+	{
+	this.x += this.vx;
+	ctx.fillRect(this.x,this.y,this.size,this.size);
+	
+	}
+	
+	
+
+
+document.onkeydown = checkKey;
+
+ function checkKey(e) {
+ 
+     e = e || window.event;
+ 
+     if (e.keyCode == '38')  //gora
+ 	{
+ 	 cialo[0].gora();
+
+ 	
+     }
+     else if (e.keyCode == '40') //dol
+ 	{
+       cialo[0].dol();
+ 	  
+     }
+     else if (e.keyCode == '37') //lewo
+ 	{
+        cialo[0].lewo();
+ 	   
+     }
+     else if (e.keyCode == '39') //prawo
+ 	{
+       cialo[0].prawo();
+ 	  
+     }
+ 
+ }
+
+ 
+ kwadracik.prototype.obwod = function()
+ {
+	if( this.x <= 500 ) {alert("Game Over");}
+ 
+ 
+ }
+ 
+ 
+</script>
+
+</body>
+</html>
