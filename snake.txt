@@ -9,13 +9,39 @@
 </style>
 </head>
 <body>
-<div id="container"><canvas id="canvas" width="500px" height="500px" > 
-</canvas></div>
+<div id="container"><canvas id="canvas" width="500px" height="500px" > </canvas></div>
 
 <script>
 var cialo = Array(100);
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d');
+var punkt = Array(10);
+
+for(var i=0;i<10;i++)
+{	
+	var random = Math.floor((Math.random() * 499) + 1);
+	var rand = Math.floor((Math.random() * 499) + 1);
+	punkt[i] = new punkty(random,rand,10);
+
+
+}
+
+
+function punkty(x,y,size)
+{
+	this.x = x;
+	this.y = y;
+	this.size = size;
+		
+	ctx.beginPath();
+	//ctx.fillStyle = "green";
+	ctx.fillRect(this.x,this.y,this.size,this.size);
+    ctx.fillRect(this.x,this.y,this.size,this.size);
+    ctx.fillRect(this.x,this.y,this.size,this.size);
+    ctx.fill();
+	ctx.stroke();
+
+}
     
 
 function kwadracik(x,y,size,kolor,vx,vy)
@@ -116,7 +142,23 @@ document.onkeydown = checkKey;
  
  }
  
+
  
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
 </script>
 
 </body>
