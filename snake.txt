@@ -1,165 +1,153 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<style>
-#container {border: 3px solid black; height: 500px; width: 500px;}
+	<!DOCTYPE HTML>
+	<html>
+	<head>
+	<style>
+	#container {border: 3px solid black; height: 500px; width: 500px;}
 
 
 
-</style>
-</head>
-<body>
-<div id="container"><canvas id="canvas" width="500px" height="500px" > </canvas></div>
+	</style>
+	</head>
+	<body>
+	<div id="container"><canvas id="canvas" width="500px" height="500px" > </canvas></div>
 
-<script>
-var cialo = Array(100);
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext('2d');
-var punkt = Array(10);
+	<script>
+	var cialo = Array(100);
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext('2d');
+	var punkt = Array(10);
 
-for(var i=0;i<10;i++)
-{	
-	var random = Math.floor((Math.random() * 499) + 1);
-	var rand = Math.floor((Math.random() * 499) + 1);
-	punkt[i] = new punkty(random,rand,10);
-
-
-}
+	for(var i=0;i<10;i++)
+	{	
+		var random = Math.floor((Math.random() * 499) + 1)+6;
+		var rand = Math.floor((Math.random() * 499) + 1)+6;
+		punkt[i] = new punkty(random,rand,10);
 
 
-function punkty(x,y,size)
-{
-	this.x = x;
-	this.y = y;
-	this.size = size;
-		
-	ctx.beginPath();
-	//ctx.fillStyle = "green";
-	ctx.fillRect(this.x,this.y,this.size,this.size);
-    ctx.fillRect(this.x,this.y,this.size,this.size);
-    ctx.fillRect(this.x,this.y,this.size,this.size);
-    ctx.fill();
-	ctx.stroke();
+	}
 
-}
-    
 
-function kwadracik(x,y,size,kolor,vx,vy)
+	function punkty(x,y,size)
 	{
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		this.kolor = kolor;
-		this.vx = vx;
-		this.vy = vy;
+			
+		ctx.beginPath();
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		ctx.fill();
+		ctx.stroke();
+
+	}
+		
+
+	function kwadracik(x,y,size,kolor,vx,vy)
+		{
+			this.x = x;
+			this.y = y;
+			this.size = size;
+			this.kolor = kolor;
+			this.vx = vx;
+			this.vy = vy;
+			
+			
+		ctx.beginPath();
+		ctx.fillStyle = this.color;
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		ctx.fill();
+		ctx.stroke();
+		}
+
+
+
+	cialo[0] = new kwadracik(256,245,10,"black",11,11);
+	cialo[1] = new kwadracik(245,245,10,"black",11,11); 
+	cialo[2] = new kwadracik(234,245,10,"black",11,11);
+
+
+	kwadracik.prototype.gora = function() 
+		{
+		
+		this.y -= this.vy;
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		
+		}
+
+	kwadracik.prototype.dol = function() 
+		{
+
+		this.y += this.vy;
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		
+		}
 		
 		
-	ctx.beginPath();
-	ctx.fillStyle = this.color;
-	ctx.fillRect(this.x,this.y,this.size,this.size);
-    ctx.fillRect(this.x,this.y,this.size,this.size);
-    ctx.fillRect(this.x,this.y,this.size,this.size);
-    ctx.fill();
-	ctx.stroke();
-	}
+	kwadracik.prototype.lewo = function() 
+		{
+		this.x -= this.vx;
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		
+		}
+		
+	kwadracik.prototype.prawo = function() 
+		{
+		this.x += this.vx;
+		ctx.fillRect(this.x,this.y,this.size,this.size);
+		
+		}
+		
+		
 
 
+	document.onkeydown = checkKey;
 
-cialo[0] = new kwadracik(256,245,10,"black",11,11);
-cialo[1] = new kwadracik(245,245,10,"black",11,11); 
-cialo[2] = new kwadracik(234,245,10,"black",11,11);
+	 function checkKey(e) {
+	 
+		 e = e || window.event;
+	 
+		 if (e.keyCode == '38')  //gora
+		{
+		  if( cialo[0].y < 3 ) {alert("Game Over");}		
+		 setInterval(cialo[0].gora(),100);
+		  if( cialo[0].y < 3 ) {alert("Game Over");}
+		
+		 }
+		 else if (e.keyCode == '40') //dol
+		{
+			if( cialo[0].y > 487) {alert("Game Over");}
+		   cialo[0].dol();
+			if( cialo[0].y > 487) {alert("Game Over");}		  
+		 }
+		 else if (e.keyCode == '37') //lewo
+		{
+			if( cialo[0].x < 3 ) {alert("Game Over");}
+			cialo[0].lewo();
+		   if( cialo[0].x < 3 ) {alert("Game Over");}
+		 }
+		 else if (e.keyCode == '39') //prawo
+		{  
+		   if( cialo[0].x > 487 ) {alert("Game Over");}
+		   cialo[0].prawo();
+		   if( cialo[0].x > 487 ) {alert("Game Over");}
+		 }
+	 
+	 }
 
-
-kwadracik.prototype.gora = function() 
-	{
-	
-	this.y -= this.vy;
-	ctx.fillRect(this.x,this.y,this.size,this.size);
-	
-	}
-
-kwadracik.prototype.dol = function() 
-	{
-
-	this.y += this.vy;
-	ctx.fillRect(this.x,this.y,this.size,this.size);
-	
-	}
-	
-	
-kwadracik.prototype.lewo = function() 
-	{
-	this.x -= this.vx;
-	ctx.fillRect(this.x,this.y,this.size,this.size);
-	
-	}
-	
-kwadracik.prototype.prawo = function() 
-	{
-	this.x += this.vx;
-	ctx.fillRect(this.x,this.y,this.size,this.size);
-	
-	}
-	
-	
+	 
 
 
-document.onkeydown = checkKey;
+ 
+	 
+	 
+	 
+	 
+	 
 
- function checkKey(e) {
- 
-     e = e || window.event;
- 
-     if (e.keyCode == '38')  //gora
- 	{
- 	 cialo[0].gora();
+	</script>
 
- 	
-     }
-     else if (e.keyCode == '40') //dol
- 	{
-       cialo[0].dol();
- 	  
-     }
-     else if (e.keyCode == '37') //lewo
- 	{
-        cialo[0].lewo();
- 	   
-     }
-     else if (e.keyCode == '39') //prawo
- 	{
-       cialo[0].prawo();
- 	  
-     }
- 
- }
-
- 
- kwadracik.prototype.obwod = function()
- {
-	if( this.x <= 500 ) {alert("Game Over");}
- 
- 
- }
- 
-
- 
- 
- 
- 
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-</script>
-
-</body>
-</html>
+	</body>
+	</html>
