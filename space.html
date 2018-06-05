@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+	<html>
+	<head>
+	<style>
+
+
+
+	</style>
+	</head>
+	<body>
+	<canvas id="canvas" width="500" height="500" > </canvas>
+
+	<script>
+	
+	 var canvas = document.getElementById("canvas");
+	 var ctx = canvas.getContext('2d');
+	 var size = 20;
+	 var statek = [];
+	 
+	ctx.beginPath();
+	ctx.fillStyle = "black";
+	ctx.fillRect(0,0,500,500);
+	
+	function ship(x,y,size)
+	{
+
+	 this.x = x;
+	 this.y = y;
+	 this.dy=20;
+	 this.dx=20;
+	 
+	ctx.fillStyle = "gray";
+	ctx.fillRect(x,y,size,size);
+
+	}
+	
+	statek[0] = new ship(240,480,20);
+	statek[1] = new ship(220,480,20);
+	statek[2] = new ship(260,480,20);
+	statek[3] = new ship(240,460,20);
+	
+	
+	
+	
+ship.prototype.lewo = function() 
+	{
+		this.x -= this.dx;
+	
+	}
+	
+ship.prototype.prawo = function() 
+	{
+	this.x += this.dx;
+	
+	}
+	
+	
+	document.onkeydown = checkKey;
+
+ function checkKey(e) {
+ 
+	 e = e || window.event;
+ 
+
+	 if (e.keyCode == '37') //lewo
+	{
+		ctx.fillStyle = "black";
+		ctx.fillRect(0,0,500,500);
+		statek[0].lewo();
+		statek[0] = new ship(statek[0].x,statek[0].y,size);		
+		statek[1].lewo();
+		statek[1] = new ship(statek[1].x,statek[1].y,size);
+		statek[2].lewo();
+		statek[2] = new ship(statek[2].x,statek[2].y,size);
+		statek[3].lewo();
+		statek[3] = new ship(statek[3].x,statek[3].y,size);
+	 }
+	 else if (e.keyCode == '39') //prawo
+	{  
+	   	ctx.fillStyle = "black";
+		ctx.fillRect(0,0,500,500);
+		statek[0].prawo();
+		statek[0] = new ship(statek[0].x,statek[0].y,size);		
+		statek[1].prawo();
+		statek[1] = new ship(statek[1].x,statek[1].y,size);
+		statek[2].prawo();
+		statek[2] = new ship(statek[2].x,statek[2].y,size);
+		statek[3].prawo();
+		statek[3] = new ship(statek[3].x,statek[3].y,size);
+	 }
+ 
+ }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	</script>
+
+	</body>
+	</html>
