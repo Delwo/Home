@@ -18,7 +18,8 @@
 	 var ctx = canvas.getContext('2d');
 	 var size = 20;
 	 var statek = [];
-	 var p;
+	 var p = [];
+	 var i=0;
 	 
 	ctx.beginPath();
 	ctx.fillStyle = "black";
@@ -57,15 +58,12 @@ ship.prototype.prawo = function()
 	
 	}
 	
-/*function pocisk(x,y,dy)
+function pocisk(x,y,dy)
 {
 	
 	this.x=x;
 	this.y=y;
 	this.dy = dy;
-	
-	
-	
 	
 	
 	
@@ -82,37 +80,9 @@ ship.prototype.prawo = function()
 	}
 	
 	setInterval(ruch,200);
-}	*/
-	
-	function test()
-	{
-	
-	p = new pocisk(statek[3].x,statek[3].y-20,size);
-	
-	function pocisk(x,y,dy)
-{
-	
-	this.x=x;
-	this.y=y;
-	this.dy = dy;
-	
-	
-	
-	ctx.fillStyle = "gray";
-	ctx.fillRect(x,y,20,20);
-	ctx.clearRect(x,y,20,20);
-	ctx.fillStyle = "black";
-	ctx.fillRect(x,y,20,20);
-	y -= dy;
-	ctx.fillStyle = "gray";
-	ctx.fillRect(x,y,20,20);
-	
-	
-	pocisk(x,y-dy,dy);
 }	
-	}
 	
-	
+
 	
 	
 	
@@ -154,14 +124,10 @@ ship.prototype.prawo = function()
  
 	 else if (e.keyCode == '32')
 	{
-		setInterval(test,200);
+	p[i] = new pocisk(statek[3].x,statek[3].y-20,size);
+	i++;
 	
-	
-	
-	
-	
-	
-	
+
 	}
  
  
