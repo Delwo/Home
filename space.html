@@ -67,23 +67,36 @@ function pocisk(x,y,dy)
 	
 	
 	
-	function ruch()
-	{
+}	
+	
+pocisk.prototype.ruch = function()
+{
+		
+	
 	ctx.fillStyle = "gray";
-	ctx.fillRect(x,y,20,20);
-	ctx.clearRect(x,y,20,20);
+	ctx.fillRect(this.x,this.y,20,20);
+	/*ctx.clearRect(x,y,20,20);
 	ctx.fillStyle = "black";
 	ctx.fillRect(x,y,20,20);
 	y -= dy;
 	ctx.fillStyle = "gray";
-	ctx.fillRect(x,y,20,20);
-	}
+	ctx.fillRect(x,y,20,20);*/
 	
-	setInterval(ruch,200);
-}	
 	
+}
 
-	
+
+pocisk.prototype.update = function()
+{
+	ctx.clearRect(this.x,this.y,20,20);
+	ctx.fillStyle = "black";
+	ctx.fillRect(this.x,this.y,20,20);
+
+	this.ruch();
+
+
+}
+
 	
 	
 	document.onkeydown = checkKey;
@@ -124,17 +137,25 @@ function pocisk(x,y,dy)
  
 	 else if (e.keyCode == '32')
 	{
-	p[i] = new pocisk(statek[3].x,statek[3].y-20,size);
-	i++;
-	
-
+		p[i] = new pocisk(statek[3].x,statek[3].y-20,size);
+		
+		
+		function petla()
+		{
+		window.requestAnimationFrame(petla);
+		p[i].update();
+		}
+		petla();
+		i++;
 	}
  
- 
- 
+	function petla()
+		{
+		window.requestAnimationFrame(petla);
+		p[i].update();
  }
 	
-	
+	}
 	
 	
 	
