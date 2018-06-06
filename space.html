@@ -16,6 +16,7 @@
 	 var ctx = canvas.getContext('2d');
 	 var size = 20;
 	 var statek = [];
+	 var p;
 	 
 	ctx.beginPath();
 	ctx.fillStyle = "black";
@@ -54,6 +55,22 @@ ship.prototype.prawo = function()
 	
 	}
 	
+function pocisk(x,y,dy)
+{
+	
+	this.x=x;
+	this.y=y;
+	this.dy = dy;
+	
+	ctx.fillStyle = "gray";
+	
+	
+	ctx.fillRect(x,y,20,20);
+	y -= dy;
+	ctx.fillRect(x,y,20,20);
+}	
+	
+	
 	
 	document.onkeydown = checkKey;
 
@@ -88,6 +105,20 @@ ship.prototype.prawo = function()
 		statek[3].prawo();
 		statek[3] = new ship(statek[3].x,statek[3].y,size);
 	 }
+ 
+	 else if (e.keyCode == '32')
+	{
+	
+	p = new pocisk(statek[3].x,statek[3].y,size);
+	
+	
+	
+	
+	
+	
+	}
+ 
+ 
  
  }
 	
