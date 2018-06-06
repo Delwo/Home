@@ -60,48 +60,35 @@ ship.prototype.prawo = function()
 	
 function pocisk(x,y,dy)
 {
-	
 	this.x=x;
 	this.y=y;
 	this.dy = dy;
-	
-	
-	
 }	
 	
-pocisk.prototype.ruch = function()
+pocisk.prototype.rysuj = function()
 {
-		
-	
-	ctx.fillStyle = "gray";
-	ctx.fillRect(this.x,this.y,20,20);
-	/*ctx.clearRect(x,y,20,20);
-	ctx.fillStyle = "black";
-	ctx.fillRect(x,y,20,20);
-	y -= dy;
-	ctx.fillStyle = "gray";
-	ctx.fillRect(x,y,20,20);*/
-	
-	
+		ctx.fillRect(this.x, this.y,20,20);
+		ctx.fillStyle="gray";
 }
-
 
 pocisk.prototype.update = function()
 {
-	ctx.clearRect(this.x,this.y,20,20);
-	ctx.fillStyle = "black";
-	ctx.fillRect(this.x,this.y,20,20);
+	ctx.fillStyle="black";
+	ctx.fillRect(this.x, this.y,20,20);
 
-	this.ruch();
-
+	this.rysuj();
 
 }
 
-	
+pocisk.prototype.ruch = function()
+{
+	this.y -= this.dy;
+}
 	
 	document.onkeydown = checkKey;
 
- function checkKey(e) {
+ function checkKey(e) 
+ {
  
 	 e = e || window.event;
  
@@ -137,43 +124,16 @@ pocisk.prototype.update = function()
  
 	 else if (e.keyCode == '32')
 	{
-		p[i] = new pocisk(statek[3].x,statek[3].y-20,size);
+	 p[i] = new pocisk(statek[3].x,statek[3].y - 20, size);
+	 p[i].rysuj();
 		
-		
-		function petla()
-		{
-		window.requestAnimationFrame(petla);
-		p[i].update();
-		}
-		petla();
-		i++;
+	 i++;
 	}
  
-	function petla()
-		{
-		window.requestAnimationFrame(petla);
-		p[i].update();
- }
-	
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+}
+
+
 	
 	
 
