@@ -12,6 +12,8 @@
 
 	<script>
 	
+	 
+	
 	 var canvas = document.getElementById("canvas");
 	 var ctx = canvas.getContext('2d');
 	 var size = 20;
@@ -64,10 +66,15 @@ function pocisk(x,y,dy)
 	
 	ctx.fillStyle = "gray";
 	
+	function ruch()
+	{
 	
 	ctx.fillRect(x,y,20,20);
 	y -= dy;
 	ctx.fillRect(x,y,20,20);
+	}
+	
+	setInterval(ruch,200);
 }	
 	
 	
@@ -82,7 +89,8 @@ function pocisk(x,y,dy)
 	 if (e.keyCode == '37') //lewo
 	{
 		ctx.fillStyle = "black";
-		ctx.fillRect(0,0,500,500);
+		ctx.clearRect(0,460,500,40);
+		ctx.fillRect(0,460,500,40);
 		statek[0].lewo();
 		statek[0] = new ship(statek[0].x,statek[0].y,size);		
 		statek[1].lewo();
@@ -95,7 +103,8 @@ function pocisk(x,y,dy)
 	 else if (e.keyCode == '39') //prawo
 	{  
 	   	ctx.fillStyle = "black";
-		ctx.fillRect(0,0,500,500);
+		ctx.clearRect(0,460,500,40);
+		ctx.fillRect(0,460,500,40);
 		statek[0].prawo();
 		statek[0] = new ship(statek[0].x,statek[0].y,size);		
 		statek[1].prawo();
@@ -109,7 +118,7 @@ function pocisk(x,y,dy)
 	 else if (e.keyCode == '32')
 	{
 	
-	p = new pocisk(statek[3].x,statek[3].y,size);
+	p = new pocisk(statek[3].x,statek[3].y-20,size);
 	
 	
 	
