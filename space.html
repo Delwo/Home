@@ -57,25 +57,62 @@ ship.prototype.prawo = function()
 	
 	}
 	
-function pocisk(x,y,dy)
+/*function pocisk(x,y,dy)
 {
 	
 	this.x=x;
 	this.y=y;
 	this.dy = dy;
 	
-	ctx.fillStyle = "gray";
+	
+	
+	
+	
 	
 	function ruch()
 	{
-	
+	ctx.fillStyle = "gray";
+	ctx.fillRect(x,y,20,20);
+	ctx.clearRect(x,y,20,20);
+	ctx.fillStyle = "black";
 	ctx.fillRect(x,y,20,20);
 	y -= dy;
+	ctx.fillStyle = "gray";
 	ctx.fillRect(x,y,20,20);
 	}
 	
 	setInterval(ruch,200);
+}	*/
+	
+	function test()
+	{
+	
+	p = new pocisk(statek[3].x,statek[3].y-20,size);
+	
+	function pocisk(x,y,dy)
+{
+	
+	this.x=x;
+	this.y=y;
+	this.dy = dy;
+	
+	
+	
+	ctx.fillStyle = "gray";
+	ctx.fillRect(x,y,20,20);
+	ctx.clearRect(x,y,20,20);
+	ctx.fillStyle = "black";
+	ctx.fillRect(x,y,20,20);
+	y -= dy;
+	ctx.fillStyle = "gray";
+	ctx.fillRect(x,y,20,20);
+	
+	
+	pocisk(x,y-dy,dy);
 }	
+	}
+	
+	
 	
 	
 	
@@ -117,8 +154,8 @@ function pocisk(x,y,dy)
  
 	 else if (e.keyCode == '32')
 	{
+		setInterval(test,200);
 	
-	p = new pocisk(statek[3].x,statek[3].y-20,size);
 	
 	
 	
