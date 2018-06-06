@@ -77,7 +77,7 @@ pocisk.prototype.update = function()
 	ctx.fillRect(this.x, this.y,20,20);
 
 	this.rysuj();
-
+	this.ruch();
 }
 
 pocisk.prototype.ruch = function()
@@ -126,7 +126,12 @@ pocisk.prototype.ruch = function()
 	{
 	 p[i] = new pocisk(statek[3].x,statek[3].y - 20, size);
 	 p[i].rysuj();
-		
+			function petla()
+			{
+			window.requestAnimationFrame(petla);
+			p[0].update();
+			}
+			petla();
 	 i++;
 	}
  
