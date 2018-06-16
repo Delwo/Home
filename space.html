@@ -20,6 +20,7 @@
 	 var statek = [];
 	 var p = [];
 	 var i=0;
+	 var n=0;
 	 
 	ctx.beginPath();
 	ctx.fillStyle = "black";
@@ -58,30 +59,59 @@ ship.prototype.prawo = function()
 	
 	}
 	
-function pocisk(x,y,dy)
+function pocisk(x,y,dy,color)
 {
 	this.x=x;
 	this.y=y;
 	this.dy = dy;
+	this.color = color;
 }	
 	
 pocisk.prototype.rysuj = function()
 {
+ctx.fillStyle="gray";
 		ctx.fillRect(this.x, this.y,20,20);
-		ctx.fillStyle="gray";
+		ctx.fill();
 }
 
 pocisk.prototype.update = function()
 {
-	ctx.fillStyle="black";
-	ctx.fillRect(this.x, this.y,20,20);
-
+	//setInterval(this.update,300);
 	this.rysuj();
 	this.ruch();
 }
 
+
+pocisk.prototype.sklejka = function()
+{
+function rysuj()
+{
+		ctx.fillStyle="gray";
+		ctx.fillRect(this.x, this.y,20,20);
+		ctx.fill();
+}
+
+function ruch()
+{
+	if(this.y>=0)
+	this.y -= this.dy;
+}
+
+function update()
+{
+	//setInterval(this.update,300);
+	rysuj();
+	ruch();
+}
+
+setInterval(update(),300);
+
+}
+
+
 pocisk.prototype.ruch = function()
 {
+	if(this.y>=0)
 	this.y -= this.dy;
 }
 	
@@ -122,26 +152,37 @@ pocisk.prototype.ruch = function()
 		statek[3] = new ship(statek[3].x,statek[3].y,size);
 	 }
  
-	 else if (e.keyCode == '32')
+	 else if (e.keyCode == '32') // spacja
 	{
-	 p[i] = new pocisk(statek[3].x,statek[3].y - 20, size);
-	 p[i].rysuj();
-			function petla()
-			{
-			window.requestAnimationFrame(petla);
-			p[0].update();
-			}
-			petla();
-	 i++;
+	   p[i] = new pocisk(statek[3].x,statek[3].y - 20, size,"gray");
+	   p[i].rysuj();
+		setInterval(p[i].sklejka,300);
+
+	   
+	   //petla(i);
+	  		 
+	  /*		 function petla()
+	  { ctx.fillStyle = "black";
+	    ctx.fillRect(0,0,460,460);
+	    for (n = 0 ; n <= p.length; n++)
+	    {
+	  	console.log(n);
+	      p[n].rysuj();
+	      p[n].ruch();
+	    }
+	    window.requestAnimationFrame(petla);
+	  }
+	  petla(i);*/
+	  		 			 
+	   i++;
 	}
  
 
 }
 
-
 	
 	
-
+	
 	</script>
 
 	</body>
