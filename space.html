@@ -50,7 +50,7 @@
 	statek[3] = new ship(240,460,20);
 	
 	
-	p[0] = new pocisk(statek[3].x,statek[3].y - 20, size,"gray");
+
 	
 ship.prototype.lewo = function() 
 	{
@@ -82,8 +82,8 @@ pocisk.prototype.rysuj = function()
 pocisk.prototype.update = function()
 {
 	//setInterval(this.update,300);
-	this.rysuj();
-	this.ruch();
+	//this.rysuj();
+	//this.ruch();
 }
 
 
@@ -133,12 +133,13 @@ pocisk.prototype.ruch = function()
 	 else if (e.keyCode == '32') // spacja
 	{
 
-	   p[i].rysuj();
-
+	
+	p[i] = new pocisk(statek[3].x,statek[3].y - 20, size,"gray");
+		//setInterval(p[i].update(),300);
 	   
 
 	  		 
-	  	 function petla()
+	  	function petla()
 	  { ctx.fillStyle = "black";
 	    ctx.fillRect(0,0,460,460);
 	    for (i=0; i<p.length ; i++)
@@ -150,7 +151,7 @@ pocisk.prototype.ruch = function()
 	  }
 	  petla(i);
 	  		 			 
-	   
+	   i++;
 	}
  
 
