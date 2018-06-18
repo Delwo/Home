@@ -21,11 +21,7 @@
 	 var p = [];
 	 var i=0;
 	 var n=0;
-	 
-	 
-	 
-	 
-	 
+	 var enemy;
 	 
 	ctx.beginPath();
 	ctx.fillStyle = "black";
@@ -44,12 +40,33 @@
 
 	}
 	
+	
+	function alien()
+	{
+		this.x = Math.floor((Math.random() * 440) + 0);
+		this.y = 10;
+		
+		
+		this.pokaz = function()
+			{
+			  //ctx.fillRect(200,100,200);
+			  //ellipse(this.x,this.y,60,60);
+			  ctx.fillRect(this.x,this.y,60,60);			
+			
+			}
+	
+	
+	}
+	
+	
+	
 	statek[0] = new ship(240,480,20);
 	statek[1] = new ship(220,480,20);
 	statek[2] = new ship(260,480,20);
 	statek[3] = new ship(240,460,20);
 	
-	
+    enemy = new alien();
+	enemy.pokaz();
 
 	
 ship.prototype.lewo = function() 
@@ -134,9 +151,9 @@ pocisk.prototype.ruch = function()
 	{
 
 	
-	p[i] = new pocisk(statek[3].x,statek[3].y - 20, size,"gray");
-		//setInterval(p[i].update(),300);
-	   
+	var bullet = new pocisk(statek[3].x,statek[3].y - 20, size,"gray");
+	
+	p.push(bullet);
 
 	  		 
 	  	function petla()
@@ -147,7 +164,7 @@ pocisk.prototype.ruch = function()
 			p[i].rysuj();
 			p[i].ruch();
 	    }
-	    window.requestAnimationFrame(petla);
+	    window.requestAnimationFrame(setTimeout(petla,100));
 	  }
 	  petla(i);
 	  		 			 
