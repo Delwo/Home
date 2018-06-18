@@ -21,10 +21,11 @@
 	 var p = [];
 	 var i=0;
 	 var n=0;
-	 var enemy;
+	 var enemy = [];
+	 var poc;
 	 
 	ctx.beginPath();
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "white";
 	ctx.fillRect(0,0,500,500);
 	
 	function ship(x,y,size)
@@ -41,20 +42,19 @@
 	}
 	
 	
-	function alien()
+	function alien(x,y)
 	{
-		this.x = Math.floor((Math.random() * 440) + 0);
-		this.y = 10;
+		this.x = x;
+		this.y = y;
 		
 		
 		this.pokaz = function()
 			{
 			  //ctx.fillRect(200,100,200);
 			  //ellipse(this.x,this.y,60,60);
+			  ctx.fillStyle = "green";
 			  ctx.fillRect(this.x,this.y,60,60);			
-			
 			}
-	
 	
 	}
 	
@@ -65,8 +65,7 @@
 	statek[2] = new ship(260,480,20);
 	statek[3] = new ship(240,460,20);
 	
-    enemy = new alien();
-	enemy.pokaz();
+
 
 	
 ship.prototype.lewo = function() 
@@ -80,16 +79,53 @@ ship.prototype.prawo = function()
 	this.x += this.dx;
 	
 	}
+		poc = new pocisk(100,400);
+function rysuj()
+{
+	for(var t = 0 ; t < 6 ; t++)
+    {enemy[t] = new alien(t*80+10 , 20);
+	enemy[t].pokaz();}
+
+
+	poc.pokaz();
+
+	poc.clear();
+
+	poc.ruch();
+
+}	
 	
-function pocisk(x,y,dy,color)
+function pocisk(x,y)
 {
 	this.x=x;
 	this.y=y;
-	this.dy = dy;
-	this.color = color;
-}	
+  
+	this.pokaz = function()
+	{ 
+	  ctx.fillRect(this.x,this.y,20,20);	
+	  ctx.fillStyle="gray";
 	
-pocisk.prototype.rysuj = function()
+	}
+	
+	this.ruch = function()
+	{ 
+	  this.y = this.y - 5;
+	  ctx.fill();
+	}	
+	
+	this.clear = function()
+	{
+
+	// ctx.clearRect(this.x,this.y,20,20);
+	// ctx.fillRect(this.x,this.y,20,20);
+	}
+	
+	
+}	
+
+
+	
+/*pocisk.prototype.rysuj = function()
 {
 		ctx.fillStyle="gray";
 		ctx.fillRect(this.x, this.y,20,20);
@@ -108,7 +144,7 @@ pocisk.prototype.ruch = function()
 {
 	if(this.y>=0)
 	this.y -= this.dy;
-}
+}*/
 	
 	document.onkeydown = checkKey;
 
@@ -175,7 +211,7 @@ pocisk.prototype.ruch = function()
 }
 
 	
-	
+	setInterval(rysuj,300);
 	
 	</script>
 
