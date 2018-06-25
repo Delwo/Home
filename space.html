@@ -3,8 +3,8 @@
 	<head>
 	<style>
 
-
-
+<script src="../p5.min.js"></script>
+ <script src="sketch.js"></script>
 	</style>
 	</head>
 	<body>
@@ -23,9 +23,10 @@
 	 var n=0;
 	 var enemy = [];
 	 var poc;
+	 var pociski = [];
 	 
 	ctx.beginPath();
-	ctx.fillStyle = "white";
+	ctx.fillStyle = "black";
 	ctx.fillRect(0,0,500,500);
 	
 	function ship(x,y,size)
@@ -46,6 +47,7 @@
 	{
 		this.x = x;
 		this.y = y;
+		this.r = 30;
 		
 		
 		this.pokaz = function()
@@ -79,26 +81,58 @@ ship.prototype.prawo = function()
 	this.x += this.dx;
 	
 	}
-		poc = new pocisk(100,400);
-function rysuj()
-{
-	for(var t = 0 ; t < 6 ; t++)
-    {enemy[t] = new alien(t*80+10 , 20);
-	enemy[t].pokaz();}
+		//poc = new pocisk(statek[3].x,statek[3].y-20);
 
-
-	poc.pokaz();
-
-	poc.clear();
-
-	poc.ruch();
-
-}	
+	// ----- pocisk ---- //
+	
+	/* nowa budowa pocisku 
+	
+	            function pocisk(x, y, w, h, s, c, t = "") {
+                this.x = x;
+                this.y = y;
+                this.width = w;
+                this.height = h;
+                this.predkosc = s;
+                this.color = c;
+                this.type = t;
+            }
+			
+			
+            pocisk.prototype.rysuj = function () {
+                ctx.beginPath()
+                ctx.fillStyle = this.color
+                ctx.fillRect(this.x, this.y, this.width, this.height)
+            };
+			
+			
+            pocisk.prototype.odswiez = function () {
+                this.y -= this.predkosc;
+                if(dist(this.x, this.y, this.width, this.height, statek.x, statek.y, statek.width, statek.height)) {
+                    this.width = null;
+                    this.x = -10;
+                    statek.zycia--;
+                    statek.width -= 6;
+                    statek.height -= 6;
+                }
+                for (var i = 0; i < wrogowie.length; i++) {
+                    if(dist(this.x, this.y, this.width, this.height, wrogowie[i].x, wrogowie[i].y, wrogowie[i].width, wrogowie[i].height) && this.type != "e") {
+                        this.width = null;
+                        this.x = -10;
+                        wrogowie.splice(i, 1)
+                    }
+                }
+            };
+	
+	*/
+	
+	
+	
 	
 function pocisk(x,y)
 {
 	this.x=x;
 	this.y=y;
+	this.r=10;
   
 	this.pokaz = function()
 	{ 
@@ -109,42 +143,43 @@ function pocisk(x,y)
 	
 	this.ruch = function()
 	{ 
-	  this.y = this.y - 5;
+	  this.y = this.y - 10;
 	  ctx.fill();
 	}	
 	
-	this.clear = function()
+    this.zderzenie = function(alien)
 	{
-
-	// ctx.clearRect(this.x,this.y,20,20);
-	// ctx.fillRect(this.x,this.y,20,20);
+	  var dist = dist(this.x,this.y,alien.x,alien.y);
+	
+	  if(dist < this.r + alien.r) return true;
+	  else return false;
+	
 	}
 	
 	
 }	
 
+function rysuj()
+{
+	for(var t = 0 ; t < 6 ; t++)
+    {enemy[t] = new alien(t*80+10 , 20);
+	enemy[t].pokaz();}
 
+	for(var t = 0; t< pociski.length; t++)
+	{
+	 pociski[t].pokaz();
+	 pociski[t].ruch();
+	 
+	 for(var n = 0; n<alien.length; n++)
+	  if(pociski[t].zderzenie(alien[n])) console.log("cos");
+	 
+	 
+	}
 	
-/*pocisk.prototype.rysuj = function()
-{
-		ctx.fillStyle="gray";
-		ctx.fillRect(this.x, this.y,20,20);
-		ctx.fill();
-}
-
-pocisk.prototype.update = function()
-{
-	//setInterval(this.update,300);
-	//this.rysuj();
-	//this.ruch();
-}
-
-
-pocisk.prototype.ruch = function()
-{
-	if(this.y>=0)
-	this.y -= this.dy;
-}*/
+}	
+	
+	
+	
 	
 	document.onkeydown = checkKey;
 
@@ -185,33 +220,15 @@ pocisk.prototype.ruch = function()
  
 	 else if (e.keyCode == '32') // spacja
 	{
-
-	
-	var bullet = new pocisk(statek[3].x,statek[3].y - 20, size,"gray");
-	
-	p.push(bullet);
-
-	  		 
-	  	function petla()
-	  { ctx.fillStyle = "black";
-	    ctx.fillRect(0,0,460,460);
-	    for (i=0; i<p.length ; i++)
-	    {
-			p[i].rysuj();
-			p[i].ruch();
-	    }
-	    window.requestAnimationFrame(setTimeout(petla,100));
-	  }
-	  petla(i);
-	  		 			 
-	   i++;
+		var bullet = new pocisk(statek[3].x,statek[3].y-20);
+		pociski.push(bullet);
 	}
  
 
 }
 
 	
-	setInterval(rysuj,300);
+	setInterval(rysuj,100);
 	
 	</script>
 
