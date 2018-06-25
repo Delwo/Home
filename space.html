@@ -1,47 +1,181 @@
-<!DOCTYPE HTML>
-	<html>
-	<head>
-	<style>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Space Invaders</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-<script src="../p5.min.js"></script>
- <script src="sketch.js"></script>
-	</style>
-	</head>
-	<body>
-	<canvas id="canvas" width="500" height="500" > </canvas>
+        <style media="screen">
+           
+            canvas {
+                background-color: #333;
+                border: 1px solid #000;
+                position: absolute;
+                margin: auto;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                box-shadow: 10px 10px 10px #333;
+            }
+ 
+            div {display: none;}
+        </style>
+    </head>
+    <body>
 
-	<script>
-	
-	 
-	
-	 var canvas = document.getElementById("canvas");
-	 var ctx = canvas.getContext('2d');
-	 var size = 20;
-	 var statek = [];
-	 var p = [];
-	 var i=0;
-	 var n=0;
-	 var enemy = [];
-	 var poc;
-	 var pociski = [];
-	 
-	ctx.beginPath();
-	ctx.fillStyle = "black";
-	ctx.fillRect(0,0,500,500);
-	
-	function ship(x,y,size)
-	{
+        <div class="przegrana">
+            <center>
+				
+            </center>
+        </div>
 
-	 this.x = x;
-	 this.y = y;
-	 this.dy=20;
-	 this.dx=20;
-	 
-	ctx.fillStyle = "gray";
-	ctx.fillRect(x,y,size,size);
+        <div class="win w3-display-middle">
+            <center>
+                <h1><span>Y</span>ou <span>W</span>on!</h1>
+                <!-- <br> -->
+                <p>⟳ Reload the page to play again.</p>
+            </center>
+        </div>
 
-	}
-	
+        <script type="text/javascript">
+           
+            const canvas = document.createElement("canvas");
+            const WIDTH = 500, HEIGHT = 500;
+            const ctx = canvas.getContext("2d");
+            const bW = 5, bH = 6, bS = 7.5;
+            const KEYS = {
+                LEFT: 65,
+                RIGHT: 68
+            }
+            var stopped = false;
+            var input = new inputHandeler();
+            var statek = new statekk((WIDTH-32)/2, HEIGHT - 2*32, 32, 32, 6);
+            var pociski = [], wrogowie = [];
+         
+		 
+		 
+		 
+            function start(){
+                let eR = 5;
+                let eC = 8;
+                let posX = 15;
+                let posY = 10;
+                for (var i = 0; i < eR; i++) {
+                    for (var k = 0; k < eC; k++) {
+                        wrogowie.push( new wrog(posX, posY, 32, 32, 20, "green") )
+                        posX += 48;
+                    }
+                    posY += 48;
+                    posX = 15;
+                }
+                canvas.addEventListener('mousedown', function() {
+                    statek.strzal();
+                })
+                var petla = setInterval(function() {
+                    if(!stopped) {
+                        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+                        odswiez();
+                        rysuj();
+                    }
+                }, 1000/30);
+            }
+			
+			
+            function konf(){
+                canvas.width = WIDTH;
+                canvas.height = HEIGHT;
+                document.body.appendChild(canvas);
+                start();
+            }
+			
+			
+            function rysuj(){
+                statek.rysuj();
+                for (var i = 0; i < pociski.length; i++) {
+                    pociski[i].rysuj();
+                }
+                for (var i = 0; i < wrogowie.length; i++) {
+                    wrogowie[i].rysuj();
+                }
+            }
+			
+			
+
+			
+			// ------- STATEK ------ //
+			
+
+            function statekk(x, y, w, h, s) {
+                this.x = x;
+                this.y = y;
+                this.width = w;
+                this.height = h;
+                this.predkosc = s;
+                this.zycia = 3;
+            }
+			
+			
+            statekk.prototype.rysuj = function () {
+                ctx.beginPath()
+                ctx.fillStyle = "white"
+                ctx.fillRect(this.x, this.y, this.width, this.height)
+            };
+			
+			
+            statekk.prototype.odswiez = function () {
+                if(input.isDown(KEYS.RIGHT)) this.x += this.predkosc;
+                if(input.isDown(KEYS.LEFT)) this.x -= this.predkosc;
+            };
+			
+			
+            statekk.prototype.strzal = function () {
+                pociski.push( new pocisk(this.x + (this.width/2-5), this.y - 7, bW, bH, bS, "pink") );
+            };
+			
+			
+			
+			// ------ pociski ----- //
+			
+           function pocisk(x, y, w, h, s, c, t = "") {
+                this.x = x;
+                this.y = y;
+                this.width = w;
+                this.height = h;
+                this.predkosc = s;
+                this.color = c;
+                this.type = t;
+            }
+			
+			
+            pocisk.prototype.rysuj = function () {
+                ctx.beginPath()
+                ctx.fillStyle = this.color
+                ctx.fillRect(this.x, this.y, this.width, this.height)
+            };
+			
+			
+            pocisk.prototype.odswiez = function () {
+                this.y -= this.predkosc;
+                if(dist(this.x, this.y, this.width, this.height, statek.x, statek.y, statek.width, statek.height)) {
+                    this.width = null;
+                    this.x = -10;
+                    statek.zycia--;
+                    statek.width -= 6;
+                    statek.height -= 6;
+                }
+                for (var i = 0; i < wrogowie.length; i++) {
+                    if(dist(this.x, this.y, this.width, this.height, wrogowie[i].x, wrogowie[i].y, wrogowie[i].width, wrogowie[i].height) && this.type != "e") {
+                        this.width = null;
+                        this.x = -10;
+                        wrogowie.splice(i, 1)
+                    }
+                }
+            };  
+			
+			// ------ wrog ---- //
+			
           function wrog(x, y, w, h, v, c) {
                 this.x = x;
                 this.y = y;
@@ -88,178 +222,80 @@
          }
      }, 1200);
 			
-	
-	
-	
-	statek[0] = new ship(240,480,20);
-	statek[1] = new ship(220,480,20);
-	statek[2] = new ship(260,480,20);
-	statek[3] = new ship(240,460,20);
-	
+			
+			
+				//----"Mechanizm"----//
+     function random(min, max) {
+         return (Math.floor(Math.random() * max) + min) > max ? max : Math.floor(Math.random() * max) + min;
+     }
 
 
+     function dist(ax, ay, aw, ah, bx, by, bw, bh) {
+         return ax<bx+bw && ay<by+bh && bx<ax+aw && by<ay+ah;
+     }
 	
-ship.prototype.lewo = function() 
-	{
-		this.x -= this.dx;
-	
-	}
-	
-ship.prototype.prawo = function() 
-	{
-	this.x += this.dx;
-	
-	}
-		//poc = new pocisk(statek[3].x,statek[3].y-20);
-
-	// ----- pocisk ---- //
-	
-	/* nowa budowa pocisku 
-	
-	            function pocisk(x, y, w, h, s, c, t = "") {
-                this.x = x;
-                this.y = y;
-                this.width = w;
-                this.height = h;
-                this.predkosc = s;
-                this.color = c;
-                this.type = t;
+			
+            function inputHandeler() {
+                this.down = {};
+                this.pressed = {};
+                var _this = this;
+				
+                document.addEventListener("keydown", function (evt) {
+                    _this.down[evt.keyCode] = true;
+                });
+				
+                document.addEventListener("keyup", function (evt) {
+                    delete _this.down[evt.keyCode];
+                    delete _this.pressed[evt.keyCode];
+                });
+            };
+			
+			
+			
+     inputHandeler.prototype.isDown = function(code) {
+         return this.down[code];
+     };
+			
+			
+            inputHandeler.prototype.isPressed = function(code) {
+                if(this.pressed[code]) {
+                    return false;
+                } else if(this.down[code]) {
+                    return this.pressed[code] = true;
+                }
+                return false;
+            };
+			
+			
+							function odswiez(){
+					if(Win()) {
+						stopped = true;
+						$('canvas').css({"opacity":0.5})
+						$('.win').css({"display":"block"})
+					}
+					if(GameOver()) {
+						stopped = true;
+						$('canvas').css({"opacity":0.5})
+						$('.gameOver').css({"display":"block"})
+					}
+					statek.odswiez();
+					for (var i = 0; i < pociski.length; i++) {
+						pociski[i].odswiez();
+					}
+				}
+			
+			
+			
+			
+            function GameOver() {
+                return statek.zycia <= 0 || wrogowie[0].y >= statek.y;
+				
             }
-			
-			
-            pocisk.prototype.rysuj = function () {
-                ctx.beginPath()
-                ctx.fillStyle = this.color
-                ctx.fillRect(this.x, this.y, this.width, this.height)
-            };
-			
-			
-            pocisk.prototype.odswiez = function () {
-                this.y -= this.predkosc;
-                if(dist(this.x, this.y, this.width, this.height, statek.x, statek.y, statek.width, statek.height)) {
-                    this.width = null;
-                    this.x = -10;
-                    statek.zycia--;
-                    statek.width -= 6;
-                    statek.height -= 6;
-                }
-                for (var i = 0; i < wrogowie.length; i++) {
-                    if(dist(this.x, this.y, this.width, this.height, wrogowie[i].x, wrogowie[i].y, wrogowie[i].width, wrogowie[i].height) && this.type != "e") {
-                        this.width = null;
-                        this.x = -10;
-                        wrogowie.splice(i, 1)
-                    }
-                }
-            };
-	
-	*/
-	
-	
-	
-	
-function pocisk(x,y)
-{
-	this.x=x;
-	this.y=y;
-	this.r=10;
-  
-	this.pokaz = function()
-	{ 
-	  ctx.fillRect(this.x,this.y,20,20);	
-	  ctx.fillStyle="gray";
-	
-	}
-	
-	this.ruch = function()
-	{ 
-	  this.y = this.y - 10;
-	  ctx.fill();
-	}	
-	
-    this.zderzenie = function(alien)
-	{
-	  var dist = dist(this.x,this.y,alien.x,alien.y);
-	
-	  if(dist < this.r + alien.r) return true;
-	  else return false;
-	
-	}
-	
-	
-}	
-/////////////////
-function rysuj()
-{
-	for(var t = 0 ; t < 6 ; t++)
-    {enemy[t] = new alien(t*80+10 , 20);
-	enemy[t].pokaz();}
+            function Win() {
+                return wrogowie.length == 0;
+            }
+            konf();
+        </script>
 
-	for(var t = 0; t< pociski.length; t++)
-	{
-	 pociski[t].pokaz();
-	 pociski[t].ruch();
-	 
-	 for(var n = 0; n<alien.length; n++)
-	  if(pociski[t].zderzenie(alien[n])) console.log("cos");
-	 
-	 
-	}
-	
-}	
-	
-	
-	
-	
-	document.onkeydown = checkKey;
-
- function checkKey(e) 
- {
- 
-	 e = e || window.event;
- 
-
-	 if (e.keyCode == '37') //lewo
-	{
-		ctx.fillStyle = "black";
-		ctx.clearRect(0,460,500,40);
-		ctx.fillRect(0,460,500,40);
-		statek[0].lewo();
-		statek[0] = new ship(statek[0].x,statek[0].y,size);		
-		statek[1].lewo();
-		statek[1] = new ship(statek[1].x,statek[1].y,size);
-		statek[2].lewo();
-		statek[2] = new ship(statek[2].x,statek[2].y,size);
-		statek[3].lewo();
-		statek[3] = new ship(statek[3].x,statek[3].y,size);
-	 }
-	 else if (e.keyCode == '39') //prawo
-	{  
-	   	ctx.fillStyle = "black";
-		ctx.clearRect(0,460,500,40);
-		ctx.fillRect(0,460,500,40);
-		statek[0].prawo();
-		statek[0] = new ship(statek[0].x,statek[0].y,size);		
-		statek[1].prawo();
-		statek[1] = new ship(statek[1].x,statek[1].y,size);
-		statek[2].prawo();
-		statek[2] = new ship(statek[2].x,statek[2].y,size);
-		statek[3].prawo();
-		statek[3] = new ship(statek[3].x,statek[3].y,size);
-	 }
- 
-	 else if (e.keyCode == '32') // spacja
-	{
-		var bullet = new pocisk(statek[3].x,statek[3].y-20);
-		pociski.push(bullet);
-	}
- 
-
-}
-
-	
-	setInterval(rysuj,100);
-	
-	</script>
-
-	</body>
-	</html>
+    </body>
+</html>
