@@ -42,23 +42,52 @@
 
 	}
 	
-	
-	function alien(x,y)
-	{
-		this.x = x;
-		this.y = y;
-		this.r = 30;
+          function wrog(x, y, w, h, v, c) {
+                this.x = x;
+                this.y = y;
+                this.width = w;
+                this.height = h;
+                this.vel = v;
+                this.color = c;
+                this.mTick = 1;
+            }
+			
+			
+     wrog.prototype.rysuj = function () {
+         ctx.beginPath();
+         ctx.fillStyle = this.color;
+         ctx.fillRect(this.x, this.y, this.width, this.height);
+     };
 		
 		
-		this.pokaz = function()
-			{
-			  //ctx.fillRect(200,100,200);
-			  //ellipse(this.x,this.y,60,60);
-			  ctx.fillStyle = "green";
-			  ctx.fillRect(this.x,this.y,60,60);			
-			}
-	
-	}
+		
+     wrog.prototype.strzal = function() {
+         pociski.push( new pocisk(this.x + (this.width-bW)/2, this.y + this.height + 1, bW, bH, -bS, "pink", "e") );
+     }
+		
+		
+     wrog.prototype.moveE = function() {
+         if(this.mTick % 7 == 0) {
+             this.y += this.height;
+             this.vel *= -1;
+         }
+         this.x += this.vel;
+         this.mTick++;
+     }
+		
+		
+		
+     var strzalInterval = setInterval(function() {
+         wrogowie[random(0, wrogowie.length-1)].strzal();
+     }, 450);
+		
+		
+     var moveInterval = setInterval(function() {
+         for (var j = 0; j < wrogowie.length; j++) {
+             wrogowie[j].moveE();
+         }
+     }, 1200);
+			
 	
 	
 	
@@ -158,7 +187,7 @@ function pocisk(x,y)
 	
 	
 }	
-
+/////////////////
 function rysuj()
 {
 	for(var t = 0 ; t < 6 ; t++)
